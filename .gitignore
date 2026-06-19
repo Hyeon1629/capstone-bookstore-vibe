@@ -1,0 +1,41 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# build
+dist/
+dist-ssr/
+build/
+.vite/
+
+# environments
+.env
+.env.local
+.env.*.local
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Capacitor (STEP 7)
+android/
+ios/
+
+# typescript
+*.tsbuildinfo
+
+# 네이티브 전환 킥오프 프롬프트 (깃 제외)
+docs/NATIVE_KOTLIN_KICKOFF.md

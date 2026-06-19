@@ -1,0 +1,124 @@
+@import "pretendard/dist/web/variable/pretendardvariable.css";
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-midnight: #13171E;
+  --bg-deeper: #0D1116;
+  --surface-01: #1D232C;
+  --surface-02: #2A313C;
+  --surface-03: #353D4A;
+  --hairline: #2B323D;
+  --hairline-strong: #3A4250;
+
+  --paper: #F2EAD9;
+  --paper-soft: #E8DEC8;
+  --paper-dim: #C3B9A6;
+  --paper-mute: #847D70;
+
+  --accent-lamp: #F2B872;
+  --accent-lamp-deep: #D99852;
+
+  --pin-bookstore: #E8804D;
+  --pin-library: #8AB293;
+  --gold-visited: #F5CD6E;
+
+  --ok: #8AB293;
+  --error: #E07A6B;
+  --info: #7AA5C4;
+
+  --font-display-kr: "Gowun Batang", "EB Garamond", serif;
+  --font-display-en: "EB Garamond", "Gowun Batang", serif;
+  --font-ui: "Pretendard Variable", "Pretendard", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --r-btn: 10px;
+  --r-input: 12px;
+  --r-card: 16px;
+  --r-sheet: 24px;
+
+  --shadow-soft: 0 8px 24px -10px rgba(30, 20, 12, 0.5);
+  --shadow-warm: 0 18px 36px -16px rgba(30, 20, 12, 0.55), 0 4px 12px -2px rgba(20, 14, 8, 0.4);
+  --shadow-glow: 0 0 28px -4px rgba(242, 184, 114, 0.33);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background: var(--bg-midnight);
+  color: var(--paper);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ── 웹 폰 프레임 (Capacitor 네이티브가 아닐 때만 적용 · WebPhoneShell) ── */
+.web-phone-backdrop {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+.app-phone {
+  position: relative;
+  width: min(375px, 100vw);
+  height: min(812px, 100dvh);
+  /* 내용이 프레임보다 길면 프레임 안에서 세로 스크롤 (실제 폰처럼) */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg-midnight);
+  /* transform → 내부 position:fixed 자손을 이 프레임 안에 가둔다 (오버레이/모달) */
+  transform: translateZ(0);
+}
+
+/* 폰 느낌 유지를 위해 스크롤바는 숨기되 스크롤 기능은 유지 */
+.app-phone {
+  scrollbar-width: none;
+}
+.app-phone::-webkit-scrollbar {
+  display: none;
+}
+
+/* 페이지 루트의 min-h-screen(=100vh)·h-screen 을 프레임 높이(100%)로 재정의 */
+.app-phone .min-h-screen {
+  min-height: 100%;
+}
+.app-phone .h-screen {
+  height: 100%;
+}
+
+/* 데스크톱 등 여유 공간이 있을 때만 기기 테두리/그림자 (모바일 웹은 풀블리드) */
+@media (min-width: 420px) and (min-height: 860px) {
+  .web-phone-backdrop {
+    padding: 24px;
+  }
+  .app-phone {
+    border-radius: 44px;
+    box-shadow:
+      0 40px 90px -30px rgba(0, 0, 0, 0.75),
+      0 0 0 10px #1a140f,
+      0 0 0 11px rgba(255, 220, 170, 0.06);
+  }
+}
