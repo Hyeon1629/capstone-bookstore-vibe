@@ -2,7 +2,7 @@
 
 숨은 책방은 대학 과제용 모바일 앱이다. 지도에서 동네 책방·도서관·북카페를 발견하고, GPS로 방문 인증해 본인의 방문 지도를 채워간다. "동네 책방을 위한 포켓몬 고".
 
-본 프로젝트는 학교 발표·평가용이며, 비즈니스 운영을 전제로 하지 않는다.
+본 프로젝트는 학교 과제·평가용이며, 비즈니스 운영을 전제로 하지 않는다.
 
 ## 핵심 제약
 
@@ -102,7 +102,7 @@ bookmarks
 
 ## 아키텍처 결정 노트
 
-- 책방 데이터는 카카오 Local 검색(`kakao.maps.services.Places`)에서만 온다. 하드코딩 시드·시연 모드(long-press mock)·seedMoods 는 2026-06-19 전면 제거됨. 홈은 `searchPlacesNear`(location+radius), 지도는 `useRemoteBookstores`(map bounds) 로 조회.
+- 책방 데이터는 카카오 Local 검색(`kakao.maps.services.Places`)에서만 온다. 하드코딩 시드·long-press mock 트리거·seedMoods 는 2026-06-19 전면 제거됨. 홈은 `searchPlacesNear`(location+radius), 지도는 `useRemoteBookstores`(map bounds) 로 조회.
 - 위치 없으면(권한 거부·미허용) 홈·지도는 `LocationPrompt`(위치 안내) 표시. 마포 고정 폴백 없음.
 - 닉네임 중복 검증: `nicknames` 컬렉션의 document id 로 nickname 을 쓴다 (atomicity 보장).
 - 분위기 태그 집계: 책방 상세 진입 시 최근 7일 `moodTags` 를 쿼리하여 카운트. 별도 집계 컬렉션 없음.

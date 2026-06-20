@@ -8,7 +8,9 @@ interface UseGeolocationResult {
   isWatching: boolean;
 }
 
-const THROTTLE_MS = 30_000;
+// 5초 — GPS 자동 방문 인증의 "체류 5초" 판정이 위치 틱에 묶여 있어, 너무 길면
+// 50m 이내에 서 있어도 인증이 한참 안 뜬다. 체류 윈도우와 맞춰 5초로 둔다.
+const THROTTLE_MS = 5_000;
 
 export function useGeolocation(): UseGeolocationResult {
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(null);
@@ -80,7 +82,7 @@ export function useGeolocation(): UseGeolocationResult {
           setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         },
         (err) => setError(err.message),
-        { enableHighAccuracy: false, maximumAge: 30_000, timeout: 15_000 },
+        { enableHighAccuracy: false, maximumAge: 5_000, timeout: 15_000 },
       );
     };
 

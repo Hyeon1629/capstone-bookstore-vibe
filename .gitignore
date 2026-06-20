@@ -37,5 +37,5 @@ ios/
 # typescript
 *.tsbuildinfo
 
-# 네이티브 전환 킥오프 프롬프트 (깃 제외)
-docs/NATIVE_KOTLIN_KICKOFF.md
+# docs 폴더 전체 — 깃허브에 올리지 않음 (설계·핸드오프·내부 문서)
+docs/

@@ -8,9 +8,8 @@ interface StatusBarProps {
  * 자체 표시되므로 별도 렌더 필요 없음.
  *
  * 컴포넌트는 호환성 유지를 위해 보존되지만 항상 null 을 반환한다.
- * 시연 데모 영상 등에서 다시 mock UI 가 필요해지면 본 함수 내부만 복구.
+ * 추후 다시 mock UI 가 필요해지면 본 함수 내부만 복구.
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function StatusBar(_props: StatusBarProps) {
   return null;
 }

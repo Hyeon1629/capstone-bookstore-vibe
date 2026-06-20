@@ -52,7 +52,7 @@ export function UserLocationMarker({ map, lat, lng, isFallback = false }: UserLo
       />
       {/* 내부 점 */}
       <div
-        aria-label={isFallback ? '시연 위치 (GPS 미사용)' : '내 위치'}
+        aria-label={isFallback ? '대략적 위치 (GPS 미사용)' : '내 위치'}
         style={{
           position: 'relative',
           width: 22,

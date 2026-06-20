@@ -10,7 +10,6 @@ import { MapPage } from '@/pages/map';
 import { BookstoreDetailPage } from '@/pages/bookstore';
 import { BookshelfPage } from '@/pages/bookshelf';
 import { MyPage } from '@/pages/mypage';
-import { SeedPicker } from '@/pages/admin/SeedPicker';
 import { useAuthStore } from '@/stores/authStore';
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -70,7 +69,6 @@ export function App() {
           </RequireAuth>
         }
       />
-      <Route path="/seed-picker" element={<SeedPicker />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

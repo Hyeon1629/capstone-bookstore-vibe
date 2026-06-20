@@ -54,22 +54,20 @@ export function classifyPlace(place: {
   const root = nodes[0] ?? '';
   const leaf = nodes[nodes.length - 1] ?? '';
 
-  // 명백히 부적합한 루트 거부
-  if (EXCLUDED_ROOTS.includes(root)) return null;
-
   // 카카오 카테고리 그룹 BK9 (서점) 은 무조건 bookstore
   if (place.category_group_code === 'BK9') return 'bookstore';
 
-  // 리프 단어 매칭
+  // 리프 단어 매칭을 루트 거부보다 먼저 한다.
+  // 카카오가 북카페를 "음식점 > 카페 > 북카페" 로 분류하는 경우가 있어, 루트('음식점')를
+  // 먼저 거부하면 의도한 북카페가 통째로 누락된다. 리프가 인정 카테고리면 루트와 무관하게 인정.
   if (LIBRARY_LEAVES.some((kw) => leaf.includes(kw))) return 'library';
   if (BOOKSTORE_LEAVES.some((kw) => leaf.includes(kw))) return 'bookstore';
 
-  // 리프가 일반 단어면 (예: 서점/도서관 단어가 카테고리 마지막에 없으면)
-  // place_name 이 "OO도서관" 으로 끝나는 경우만 보수적으로 library 인정
-  if (
-    /도서관$/.test(place.place_name.replace(/\s+/g, '')) &&
-    !EXCLUDED_ROOTS.includes(root)
-  ) {
+  // 명백히 부적합한 루트 거부 (음식점·금융·숙박 등)
+  if (EXCLUDED_ROOTS.includes(root)) return null;
+
+  // 리프가 일반 단어면 place_name 이 "OO도서관" 으로 끝나는 경우만 보수적으로 library 인정
+  if (/도서관$/.test(place.place_name.replace(/\s+/g, ''))) {
     return 'library';
   }
 

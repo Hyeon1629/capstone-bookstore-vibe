@@ -1,6 +1,7 @@
 import {
   browserLocalPersistence,
   createUserWithEmailAndPassword,
+  deleteUser,
   onAuthStateChanged,
   setPersistence,
   signInWithEmailAndPassword,
@@ -78,9 +79,11 @@ export async function register({
       nickname,
     });
   } catch (err) {
+    // 프로필 생성 실패 시 방금 만든 Auth 계정은 프로필 없는 orphan 이 된다.
+    // 정리해 두지 않으면 같은 이메일 재가입 시 EMAIL_IN_USE 로 막힌다 (방금 만든
+    // 계정이라 재인증 없이 즉시 삭제 가능). 삭제 자체 실패는 무시하고 원인 에러를 surfacing.
+    await deleteUser(cred.user).catch(() => undefined);
     if (err instanceof NicknameTakenError) {
-      // Auth 계정은 만들어졌지만 Firestore 트랜잭션 실패
-      // 시연 단순화를 위해 Auth 계정은 그대로 두고 에러만 surfacing
       throw new AuthFlowError('NICKNAME_TAKEN', err);
     }
     throw mapFirebaseError(err);

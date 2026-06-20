@@ -23,9 +23,9 @@
 |------|-----------|
 | **인증** | 이메일/비밀번호 회원가입, 로그인/로그아웃, 자동 로그인, 닉네임 중복 검증 |
 | **온보딩** | 컨셉 슬라이드 + 위치 권한 요청 |
-| **지도 홈** | 카카오맵 기반 2색 핀 (서점·헌책방 = 주황 / 도서관·북카페 = 초록), 카테고리 토글, 책방 이름 검색, 핀 탭 시 미리보기 시트. 시드 책방 외에도 지도 영역의 추가 책방을 카카오 Local API로 동적 표시 |
+| **지도 홈** | 카카오맵 기반 2색 핀 (서점·헌책방 = 주황 / 도서관·북카페 = 초록), 카테고리 토글, 책방 이름 검색, 핀 탭 시 미리보기 시트. 지도 영역의 책방을 카카오 Local API로 동적 표시 |
 | **책방 상세** | 사진 슬라이드, 운영 정보, 분위기 태그 집계, 외부 연결 (전화 / 길찾기 / 공유) |
-| **GPS 방문 인증** | 반경 50m + 5초 체류 시 자동 인증, 시연 모드 (핀 long-press로 GPS 모킹) |
+| **GPS 방문 인증** | 반경 50m + 5초 체류 시 자동 인증 |
 | **분위기 이모지** | 방문 후 5개 이모지 (☕ 🌧️ 🎶 🤫 ☀️) 중 1개 선택 → 다음 사용자에게 분위기 정보 제공 |
 | **마이 북쉘프** | 방문 지도 (컬러 핀 = 방문, 회색 = 미방문) + 방문 기록 리스트 |
 
@@ -46,7 +46,7 @@
 
 ### Mobile
 - **Capacitor 8** (웹 → Android 패키징)
-- Android Studio AVD (가상 디바이스 시연)
+- Android Studio AVD (가상 디바이스 테스트)
 
 ## 4. 프로젝트 구조
 
@@ -70,11 +70,11 @@ hidden-bookstore/
 ├── src/
 │   ├── components/
 │   │   ├── primitives/            # Button, Chip, TextInput, MapPin 등
-│   │   ├── shared/                # BottomNav, PhoneFrame, DemoModeToggle 등
+│   │   ├── shared/                # BottomNav, PhoneFrame 등
 │   │   ├── map/ bookstore/ visit/ # 화면별 컴포넌트
 │   │   └── AuthGate.tsx           # 인증 가드
 │   ├── data/
-│   │   └── bookstores.ts         # 책방 시드 데이터 (5곳, 하드코딩)
+│   │   └── bookstores.ts         # Bookstore 타입 정의
 │   ├── hooks/                    # useKakaoMap, useGeolocation, useMoodTags 등
 │   ├── lib/
 │   │   ├── firebase.ts            # Firebase 초기화
@@ -82,7 +82,7 @@ hidden-bookstore/
 │   │   ├── firestore.ts           # Firestore CRUD 헬퍼
 │   │   └── geo.ts                 # haversine 거리 계산
 │   ├── pages/                    # 온보딩, 회원가입, 로그인, 지도, 상세, 북쉘프, 마이
-│   ├── stores/                   # zustand (mapStore, demoStore, authStore 등)
+│   ├── stores/                   # zustand (mapStore, authStore 등)
 │   └── styles/
 │       └── globals.css            # 디자인 토큰 CSS 변수 + Tailwind
 │
@@ -95,7 +95,7 @@ hidden-bookstore/
 - [Node.js](https://nodejs.org) 20 이상
 - [Firebase 프로젝트](https://console.firebase.google.com) (Authentication + Firestore 활성화)
 - [카카오 개발자](https://developers.kakao.com) 앱 등록 (JavaScript 키 발급)
-- (선택) [Android Studio](https://developer.android.com/studio) + AVD (Android 시연 시)
+- (선택) [Android Studio](https://developer.android.com/studio) + AVD (Android 실행 시)
 
 ### 환경변수 설정
 프로젝트 루트에 `.env.local` 파일 생성 (`.env.example` 복사 후 값 채우기):
@@ -122,17 +122,9 @@ npx cap sync android         # Android 프로젝트에 동기화
 npx cap open android         # Android Studio 열기 → AVD에서 [Run]
 ```
 
-## 6. 시드 데이터
+## 6. 책방 데이터
 
-시연 핵심을 보장하기 위해 책방 5곳이 `src/data/bookstores.ts`에 하드코딩되어 있습니다. 모두 서울 마포구에 실재하는 장소이며, 카카오 실 데이터(상호·주소·좌표)를 기반으로 합니다:
-
-- **마포구립서강도서관** — 서울 마포구 독막로 165 (창전동)
-- **서강대학교 로욜라도서관** — 서울 마포구 백범로 35 (대흥동)
-- **교보문고 합정점** — 서울 마포구 월드컵로3길 14 (합정동)
-- **영풍문고 홍대점** — 서울 마포구 양화로 161 (동교동)
-- **숨어있는책** — 서울 마포구 신촌로12길 30 (동교동, 중고서점)
-
-이 시드 책방 외에, 지도 영역을 이동하면 카카오 Local API로 추가 책방·도서관·북카페를 동적으로 합쳐 표시합니다.
+책방 데이터는 카카오 Local 검색(`kakao.maps.services.Places`)에서만 가져옵니다. 하드코딩 시드는 없으며, `src/data/bookstores.ts`는 `Bookstore` 타입만 정의합니다. 홈은 위치+반경으로, 지도는 영역(bounds)으로 책방·도서관·북카페를 조회합니다. 방문·북마크한 책방은 Firestore 문서에 스냅샷으로 비정규화 저장되어 발자취·상세가 복원됩니다.
 
 ## 7. 디자인 시스템
 
@@ -165,13 +157,13 @@ npx cap open android         # Android Studio 열기 → AVD에서 [Run]
 STEP 0  CLAUDE.md + IMPLEMENTATION_LOG.md (코드 없이 문서만)
 STEP 1  프로젝트 셋업 + 디자인 시스템 (Vite, Tailwind, 토큰, primitives)
 STEP 2  인증 + 온보딩 (Firebase Auth, 닉네임 중복 검증)
-STEP 3  지도 홈 (카카오맵, 시드 핀 + 카카오 API 동적 핀, 카테고리 토글, 검색)
+STEP 3  지도 홈 (카카오맵, 카카오 API 동적 핀, 카테고리 토글, 검색)
 STEP 4  책방 상세 (사진 슬라이드, 분위기 집계, 외부 연결)
-STEP 5  GPS 인증 + 분위기 입력 + 시연 모드
+STEP 5  GPS 인증 + 분위기 입력
 STEP 6  마이 북쉘프 + 마이페이지
 STEP 7  Capacitor Android 패키징
 ```
 
 ---
 
-> 본 프로젝트는 대학교 캡스톤 과제 시연용으로 제작되었습니다.
+> 본 프로젝트는 대학교 캡스톤 과제용으로 제작되었습니다.

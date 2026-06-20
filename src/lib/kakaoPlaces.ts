@@ -88,7 +88,7 @@ function runOnePass(pass: SearchPass, map: kakao.maps.Map): Promise<RemoteBookst
         return;
       }
       collected.push(...result);
-      // 최대 2페이지만 (~30개) 가져옴 — 시연용 충분
+      // 최대 2페이지만 (~30개) 가져옴
       if (pagination.hasNextPage && pagination.current < 2) {
         pagination.nextPage();
       } else {

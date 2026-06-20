@@ -55,7 +55,7 @@ export function MapHomeMap({ userLocation, visitedIds }: MapHomeMapProps) {
     return formatDistance(haversineMeters(userLocation, { lat: focused.lat, lng: focused.lng }));
   }, [focused, userLocation]);
 
-  // 거리 필터 기준점 — 사용자(또는 시연) 위치
+  // 거리 필터 기준점 — 사용자 위치
   const filterOrigin = userLocation;
 
   // 거리 필터 우회: 검색 중이거나 '방문 완료' 필터 활성 시
@@ -162,7 +162,7 @@ export function MapHomeMap({ userLocation, visitedIds }: MapHomeMapProps) {
         </div>
       )}
 
-      {/* 사용자 위치 핀 (또는 fallback 시연 위치) */}
+      {/* 사용자 위치 핀 */}
       {map && (
         <UserLocationMarker map={map} lat={userLocation.lat} lng={userLocation.lng} />
       )}

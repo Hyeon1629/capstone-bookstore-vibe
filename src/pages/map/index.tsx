@@ -13,6 +13,7 @@ import { PaperFadeOverlay } from '@/components/visit/PaperFadeOverlay';
 import { RadarPulse } from '@/components/visit/RadarPulse';
 import type { MoodEmoji } from '@/data/bookstores';
 import { useGeolocation } from '@/hooks/useGeolocation';
+import { useNearbyAutoSeed } from '@/hooks/useNearbyAutoSeed';
 import { useVisitAutoDetect } from '@/hooks/useVisitAutoDetect';
 import { useUserVisits } from '@/hooks/useUserVisits';
 import { haversineMeters } from '@/lib/geo';
@@ -57,6 +58,9 @@ export function MapPage() {
     return n;
   }, [position, remoteList]);
 
+  // 자동 인증 후보를 내 위치 주변 검색으로도 채워, 지도 bounds 밖이어도 누락되지 않게 함
+  useNearbyAutoSeed(position);
+
   const { pendingVisit, duplicateNotice, notifyDuplicate, dismissDuplicate, dismissPending } =
     useVisitAutoDetect(userId);
 
@@ -84,7 +88,10 @@ export function MapPage() {
     try {
       await recordVisit({ userId, bookstore: pendingVisit.bookstore, emoji });
       await queryClient.invalidateQueries({ queryKey: ['visits', userId] });
-      await queryClient.invalidateQueries({ queryKey: ['moodTags', pendingVisit.bookstore.id] });
+      if (emoji) {
+        await queryClient.invalidateQueries({ queryKey: ['moodTags', pendingVisit.bookstore.id] });
+        await queryClient.invalidateQueries({ queryKey: ['userMoodTags', userId] });
+      }
       dismissPending();
       navigate('/bookshelf');
     } catch (err) {

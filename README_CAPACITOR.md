@@ -1,6 +1,6 @@
-# README_CAPACITOR.md — Android Studio 시연 가이드
+# README_CAPACITOR.md — Android Studio 실행 가이드
 
-본 문서는 **Capacitor 로 패키징한 Android 빌드를 Android Studio AVD 에서 실행**하기 위한 시연자용 가이드입니다.
+본 문서는 **Capacitor 로 패키징한 Android 빌드를 Android Studio AVD 에서 실행**하기 위한 가이드입니다.
 
 ---
 
@@ -113,20 +113,17 @@ npm run android:sync
 
 ---
 
-## 4. 시연 흐름 (앱 실행 후)
+## 4. 실행 흐름 (앱 실행 후)
 
 1. 첫 진입 → **온보딩 슬라이드 3장** → [시작하기]
 2. **회원가입** (이메일/비번/닉네임 실시간 검증) → 위치 권한 모달 **허용**
-3. `/map` 자동 진입 → **17개 핀** 표시 (마포구립서강도서관 + 서강대 로욜라도서관 포함)
-4. **검색바 "서강"** 입력 → 두 도서관 핀 강조
+3. `/map` 자동 진입 → 현재 위치 주변 책방·도서관·북카페 핀 표시 (카카오 Local 검색)
+4. **검색바**에 책방 이름 입력 → 매칭 핀 강조
 5. 핀 탭 → 미리보기 시트 → [상세 →] → 책방 상세 화면
-6. 하단 [마이] 탭 → **시연 모드 토글 ON**
-7. [지도] 탭 복귀 → 우상단 `DEMO · 시연 모드` 배지
-8. 마포구립서강도서관 핀을 **0.5초 길게 누름** (long-press)
-9. radar pulse → paper fadein → **황금 스탬프 모달** + 분위기 이모지 5개
-10. `🤫 한적한` 선택 → [북쉘프에 기록하기] → `/bookshelf` 자동 이동
-11. **누적 통계 0 → 1 카운트업**, **NO.01 책 등(spine)** 표시
-12. [마이] → 프로필 카드 + Explorer LV 배지 + 로그아웃
+6. 책방 50m 이내 + 5초 체류 시 자동 GPS 인증 → radar pulse → paper fadein → **황금 스탬프 모달** + 분위기 이모지 5개
+7. `🤫 한적한` 선택 → [북쉘프에 기록하기] → `/bookshelf` 자동 이동
+8. **누적 통계 0 → 1 카운트업**, **NO.01 책 등(spine)** 표시
+9. [마이] → 프로필 카드 + Explorer LV 배지 + 로그아웃
 
 ---
 
@@ -164,7 +161,7 @@ npm run android:sync
 
 ## 6. 배포 (선택)
 
-학교 과제 시연 범위에서는 디버그 APK 만으로 충분합니다. Release APK 가 필요하면:
+학교 과제 범위에서는 디버그 APK 만으로 충분합니다. Release APK 가 필요하면:
 
 ```bash
 # Android Studio → Build → Generate Signed Bundle / APK → APK → Create new keystore → Build
@@ -201,4 +198,4 @@ npm run android:sync
 
 ---
 
-*이상입니다. 위 가이드에 따라 빌드하면 시연 가능한 Android 앱이 완성됩니다.*
+*이상입니다. 위 가이드에 따라 빌드하면 실행 가능한 Android 앱이 완성됩니다.*

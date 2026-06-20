@@ -112,7 +112,7 @@ function PhoneStage({ screen, onNavigate }) {
 }
 
 function ScreenMeta({ meta, onNavigate }) {
-  // 화면별 디자인 노트 — 시연 시 "왜 이렇게 디자인했나"를 설명하기 좋게
+  // 화면별 디자인 노트 — "왜 이렇게 디자인했나"를 설명하기 좋게
   const NOTES = {
     map: {
       headline: '"동네에 이렇게 많았다" 의 와우 모먼트',
@@ -135,7 +135,7 @@ function ScreenMeta({ meta, onNavigate }) {
         "분위기 태그는 단순 칩이 아니라 emoji + label + count 의 3요소 카드로 — '다른 사람들도 이렇게 느꼈다'를 시각화.",
       ],
       decisions: [
-        "하단 액션바 — 길찾기를 Primary 로 격상(시연 시 분위기 입력으로 이어지는 경로)",
+        "하단 액션바 — 길찾기를 Primary 로 격상(분위기 입력으로 이어지는 경로)",
         "방문 완료 배지 — 우측 상단에 골드 monospace 캡션 으로 차분하게",
         "사진 더 보기 — 3:1 그리드 + 4px 분리. 인스타 게시판 느낌의 친숙한 그리드",
       ],
@@ -184,7 +184,7 @@ function ScreenMeta({ meta, onNavigate }) {
       paragraphs: [
         "이메일·비밀번호·닉네임 3개 필드. 모든 인풋이 실시간 검증과 OK 마이크로 인터랙션을 가집니다.",
         "검증 상태는 보더 컬러(앰버=focus, sage=ok, 코랄=error) 와 캡션 텍스트 둘 다로 전달.",
-        "동의 영역을 별도 체크 카드로 분리 — 시연 시 '약관에 동의했다'가 시각적으로 보이도록.",
+        "동의 영역을 별도 체크 카드로 분리 — '약관에 동의했다'가 시각적으로 보이도록.",
       ],
       decisions: [
         "헤드라인 카피 — '시작하기' 같은 진부함 대신 페르소나(서연)의 책장 만들기로 친밀하게",
@@ -215,7 +215,7 @@ function ScreenMeta({ meta, onNavigate }) {
       decisions: [
         "프로필 카드 — 우상단 펜던트 글로우 누설. 카드 한 장이 '책방의 작은 창'처럼",
         "MiniStat — 큰 숫자 + 라벨. 누적 13 / 이번 달 4",
-        "Footer 버전 — monospace. 학생 시연 시 v1.0.0 임을 명시",
+        "Footer 버전 — monospace. v1.0.0 임을 명시",
       ],
     },
   };
@@ -566,7 +566,7 @@ function SidePanel({ current, onSelect }) {
           lineHeight: 1.6,
         }}
       >
-        대학 과제 시연용 · v1.0
+        대학 과제용 · v1.0
         <br />
         Phase 3 · 8 screens + guide
       </div>

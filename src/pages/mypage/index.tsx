@@ -162,7 +162,7 @@ export function MyPage() {
               icon={<SettingsIcon />}
               label="앱 정보"
               right="v1.0.0"
-              onClick={() => flashToast('대학 과제 시연용 · v1.0.0')}
+              onClick={() => flashToast('대학 과제용 · v1.0.0')}
             />
           </MenuGroup>
         </div>

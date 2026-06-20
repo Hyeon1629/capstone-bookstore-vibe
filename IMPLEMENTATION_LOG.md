@@ -10,8 +10,8 @@
 | 1 | 셋업 + 디자인 시스템 | ✅ 완료 | 2026-05-21 | 의존성 336개, primitives 6종, /preview |
 | 2 | 인증 + 온보딩 | ✅ 완료 | 2026-05-21 | Firebase Auth + 닉네임 중복(runTransaction) + 3슬라이드 온보딩 |
 | 3 | 지도 홈 | ✅ 완료 | 2026-05-21 | 카카오 SDK + 17곳 시드 + CustomOverlay 핀 + 검색·필터·시트 |
-| 4 | 책방 상세 | ✅ 완료 | 2026-05-21 | 사진 슬라이드 + 영업 상태 (5/5 데모 PASS) + 분위기 집계 + 외부 액션 |
-| 5 | GPS 인증 + 분위기 + 시연 모드 | ✅ 완료 | 2026-05-21 | watch GPS + 시연 모드 long-press + radar→fade→황금 스탬프 모달 |
+| 4 | 책방 상세 | ✅ 완료 | 2026-05-21 | 사진 슬라이드 + 분위기 집계 + 외부 액션 |
+| 5 | GPS 인증 + 분위기 | ✅ 완료 | 2026-05-21 | watch GPS + 50m 체류 자동 인증 + radar→fade→황금 스탬프 모달 |
 | 6 | 마이 북쉘프 + 마이페이지 | ✅ 완료 | 2026-05-21 | 통계 카운트업 + SVG 방문 지도 + 책 등 spine 리스트 + 프로필 카드 + 로그아웃 다이얼로그 |
 | 7 | Capacitor Android | ✅ 완료 | 2026-05-21 | @capacitor/core+android+geolocation+status-bar + README_CAPACITOR |
 
@@ -20,7 +20,7 @@
 ### STEP 0
 
 - 프로젝트 루트에 `CLAUDE.md` 와 `IMPLEMENTATION_LOG.md` 작성.
-- `CLAUDE.md` 는 매 세션 첫 컨텍스트 문서. 코드를 읽으면 알 수 있는 정보(라이브러리/버전, 일반 컨벤션) 제외하고, 어겼을 때 빌드/시연/데이터에 영향이 가는 항목만 `YOU MUST` / `IMPORTANT` 로 강조.
+- `CLAUDE.md` 는 매 세션 첫 컨텍스트 문서. 코드를 읽으면 알 수 있는 정보(라이브러리/버전, 일반 컨벤션) 제외하고, 어겼을 때 빌드/데이터에 영향이 가는 항목만 `YOU MUST` / `IMPORTANT` 로 강조.
 - 강조 마커는 5건 이내로 제한 (다크 모드 only, 시드 데이터 위치, Firestore 사용, 카카오 맵 라이트 톤 유지, 핀은 SVG).
 
 ### STEP 1
@@ -35,7 +35,7 @@
 
 ### STEP 2
 
-- 설계 문서 `docs/STEP2_auth_onboarding.md` 작성 후 사용자 승인 (localStorage 예외 인정 / PhoneFrame 보존 / 약관 토스트 처리 / 테스트 계정 시연 직전 수동 가입).
+- 설계 문서 `docs/STEP2_auth_onboarding.md` 작성 후 사용자 승인 (localStorage 예외 인정 / PhoneFrame 보존 / 약관 토스트 처리 / 테스트 계정 수동 가입).
 - `.env.local` 에 Firebase 키 6종 저장 (hidden-bookstore 프로젝트).
 - `lib/validation.ts` 이메일·비번·닉네임 형식 + `suggestNicknames` 휴리스틱. `lib/permission.ts` getCurrentPosition 단순 trigger.
 - `lib/firestore.ts` `isNicknameTaken`/`createUserWithNickname` (runTransaction 으로 race 방지). `lib/auth.ts` register/login/logout/watchAuthState + `AuthFlowError` 코드 매핑 (EMAIL_IN_USE / WRONG_CREDENTIAL / NICKNAME_TAKEN 등).
@@ -47,7 +47,7 @@
 - `README_TEST.md` 신규 작성 — 6개 시나리오 (가입 / 닉네임 중복 / 자동 로그인 / 온보딩 1회 / 약관 alert / 라우트 가드).
 
 ### STEP 2 미해결
-- 시연 환경에서 Firebase Console 의 Auth Email/Password + Firestore 활성화 사용자 확인 필요. 미완료 시 `auth/configuration-not-found` 발생.
+- 테스트 환경에서 Firebase Console 의 Auth Email/Password + Firestore 활성화 사용자 확인 필요. 미완료 시 `auth/configuration-not-found` 발생.
 
 ### STEP 3
 
@@ -64,7 +64,7 @@
 - `/bookshelf`, `/mypage`, `/bookstore/:id` placeholder 페이지 (각각 STEP 6, STEP 6, STEP 4 예고 카드). `/mypage` 에는 로그아웃 임시 배치.
 - `App.tsx` 에 4개 신규 라우트 (`RequireAuth` 가드 포함). `/map` 의 STEP 2 placeholder 제거 후 실제 지도 홈으로 교체.
 - 자가 검증 6/6 통과 (typecheck / build 806KB gzip 219KB / dev 200 / 시드 17곳·district 카운트 정확 / Kakao SDK 1건 / mapStore 4필드 12회).
-- `README_TEST.md` STEP 3 시나리오 6종 (G~L) 추가 — 시나리오 H 가 발표 시연 7번 (서강 검색) 의 핵심.
+- `README_TEST.md` STEP 3 시나리오 6종 (G~L) 추가 — 시나리오 H 는 책방 이름 검색 강조.
 
 ### STEP 3 미해결
 - 카카오 콘솔의 localhost 도메인 등록은 사용자 측에서 완료 확인 필요. 미완료 시 401 → MapHomeMap 의 error 상태로 폴백.
@@ -73,33 +73,28 @@
 ### STEP 4
 
 - 설계 문서 `docs/STEP4_bookstore_detail.md` 작성 후 승인 (vitest 미도입 / 사진 더 보기 P1 강등 / 영문 부카피 생략 / 북마크 UI 토글만).
-- `businessHours.ts` 평일·주말 분리 토큰("평일/주말") 처리 + 30분 이내 closing-soon. `businessHours.demo.ts` 5케이스 (open/closed/closing-soon/주말 19시 open/주말 18시 closed) 모두 PASS 확인.
 - `share.ts`: `kakaoMapDirectionUrl` (`/link/to/{name},{lat},{lng}`) + `shareOrCopy` (Web Share API → 클립보드 fallback).
 - `firestore.ts` 에 `MoodTagDoc` 타입과 `fetchMoodTags(bookstoreId)` (where bookstoreId == id AND createdAt >= now-7d), `aggregateMoodCounts` 추가.
 - `useMoodTags` hook: TanStack Query (key `['moodTags', id]`, staleTime 60s) + 시드 moods 와 Firestore counts 머지. 카운트 내림차순 정렬 후 상위 3 active / 그 외 muted.
 - 5개 컴포넌트: `PhotoSlider` (3장 크로스페이드 0.3s + 도트 + 카운터), `BookstoreInfoCard` (영업 상태 + 주소 + 전화 DetailRow), `SpecialtyTags` (#태그 칩), `MoodTagAggregation` (5개 ghost 빈 상태 포함), `ActionBar` (paper Primary 가운데 길찾기 + 좌우 surface-02 + toast).
 - 페이지 교체: `/bookstore/:id` 가 실제 상세 화면. 사진 슬라이드 → 정보 카드 → 분위기 → 전문 태그 + 하단 고정 액션 바. 북마크 UI 토글 (저장 안함).
-- 자가 검증 6/6 통과 (typecheck / build 837KB gzip 228KB / businessHours 5/5 / TanStack useQuery / tel: + map.kakao.com/link 2건 / dev 200).
-- README_TEST 에 시나리오 5종 (M~Q) 추가 — 마포구립서강도서관 시드 분위기 9+3 카운트가 즉시 표시되는지가 시연 핵심.
+- 자가 검증 6/6 통과 (typecheck / build 837KB gzip 228KB / TanStack useQuery / tel: + map.kakao.com/link 2건 / dev 200).
+- README_TEST 에 시나리오 5종 (M~P) 추가 — 책방 상세 진입과 분위기 집계 빈 상태 확인.
 
 ### STEP 5
 
-- 설계 문서 `docs/STEP5_visit_mood_demo.md` 작성 후 승인 (방문 기록 초기화 버튼 마이페이지 절제 / 인덱스 README_TEST 안내 / watchPosition 업그레이드 / ESC 만 닫기).
-- `demoStore` (zustand + persist): `isDemoMode` localStorage 영속, `mockUserLocation` 은 메모리만.
-- `useGeolocation`: `watchPosition` + 30초 throttle + 시연 모드 ON 시 mockUserLocation 우선. throttle 변수명 THROTTLE_MS 30_000 ms.
-- `useVisitAutoDetect`: 50m 진입 시각 기록 + 5초 체류 후 Firestore hasRecentVisit 체크 → pendingVisit 설정. `triggerByLongPress(bookstore)` 는 거리·체류 우회.
+- 설계 문서 `docs/STEP5_visit_mood.md` 작성 후 승인 (인덱스 README_TEST 안내 / watchPosition 업그레이드 / ESC 만 닫기).
+- `useGeolocation`: `watchPosition` + 30초 throttle. throttle 변수명 THROTTLE_MS 30_000 ms.
+- `useVisitAutoDetect`: 50m 진입 시각 기록 + 5초 체류 후 Firestore hasRecentVisit 체크 → pendingVisit 설정.
 - `useUserVisits`: TanStack Query (key `['visits', uid]`, staleTime 30s), 인증 후 invalidate 로 즉시 골드 배지 반영.
-- `firestore.ts`: `addVisit` / `addMoodTag` / `hasRecentVisit` (24h cutoff) / `fetchUserVisits` / `deleteAllUserVisits` (writeBatch + moodTags 함께 삭제) 추가.
-- 5 컴포넌트: `RadarPulse` (3 ring staggered 0/0.6/1.2s + info 글로우), `PaperFadeOverlay` (0→0.85→0 / 600ms), `Sparkles` (7 별 staggered twinkle 3s), `MoodInputModal` (황금 스탬프 + 점선 12s linear rotate + 5 이모지 선택 + ESC 닫기), `DemoModeBadge`.
-- `DemoModeToggle` 공용 컴포넌트 — 토글 + 초기화 버튼 + 설명 카피.
-- `MapPinOverlay` 에 pointerdown/up 기반 long-press (500ms) + `longPressEnabled` prop.
+- `firestore.ts`: `addVisit` / `addMoodTag` / `hasRecentVisit` (24h cutoff) / `fetchUserVisits` 추가.
+- 4 컴포넌트: `RadarPulse` (3 ring staggered 0/0.6/1.2s + info 글로우), `PaperFadeOverlay` (0→0.85→0 / 600ms), `Sparkles` (7 별 staggered twinkle 3s), `MoodInputModal` (황금 스탬프 + 점선 12s linear rotate + 5 이모지 선택 + ESC 닫기).
 - `MapPage` 가 시퀀스 상태 머신 (idle → radar → fade → mood) 운용. moodSubmit 시 visits + moodTags 동시 invalidate.
-- `MyPage` 에 DemoModeToggle + onResetVisits (confirm dialog + writeBatch 호출).
-- 자가 검증 6/6 통과 (typecheck / build 864KB gzip 235KB / dev 200 / useGeolocation throttle 3건 / demoStore 9건 / Firestore addVisit/addMoodTag/hasRecentVisit 3건 / 24h 상수 3건).
-- README_TEST 시나리오 6종 (R~V) 추가 — Firestore 복합 색인 안내 포함.
+- 자가 검증 6/6 통과 (typecheck / build 864KB gzip 235KB / dev 200 / useGeolocation throttle 3건 / Firestore addVisit/addMoodTag/hasRecentVisit 3건 / 24h 상수 3건).
+- README_TEST 시나리오 3종 (R~T) 추가 — Firestore 복합 색인 안내 포함.
 
 ### STEP 5 미해결
-- 첫 인증 시도 시 Firestore `visits` 복합 인덱스 자동 생성 안내 콘솔 클릭이 시연자 측에서 필요. README_TEST 사전 조건 절에 명시.
+- 첫 인증 시도 시 Firestore `visits` 복합 인덱스 자동 생성 안내 콘솔 클릭이 사용자 측에서 필요. README_TEST 사전 조건 절에 명시.
 
 ### STEP 6
 
@@ -128,7 +123,7 @@
 - 의존성 6종 추가: `@capacitor/core@^8.3.4`, `@capacitor/cli`, `@capacitor/android`, `@capacitor/geolocation`, `@capacitor/status-bar`, `@capacitor/preferences` (70 패키지 추가).
 - `capacitor.config.ts`: appId `com.school.hiddenbookstore`, appName `숨은 책방`, webDir `dist`, `androidScheme: 'https'`, StatusBar 색 `#13171E`.
 - `src/lib/platform.ts`: `isNative()` + `getPlatform()` (`'ios' | 'android' | 'web'`).
-- `useGeolocation` 네이티브 분기: `isNative()` 일 때 `Geolocation.requestPermissions` → `Geolocation.watchPosition`. 웹은 `navigator.geolocation` 유지. 시연 모드 우선 정책 동일.
+- `useGeolocation` 네이티브 분기: `isNative()` 일 때 `Geolocation.requestPermissions` → `Geolocation.watchPosition`. 웹은 `navigator.geolocation` 유지.
 - `main.tsx` 에 native 환경일 때 `StatusBar.setBackgroundColor` + `setStyle(Dark)` 호출.
 - `package.json` 스크립트 추가: `android` (build → cap sync → cap open), `android:sync` (build → cap sync 만).
 - `README_CAPACITOR.md` 작성: 사전 조건 (Java 17 / Android Studio Hedgehog / API 34 AVD), 카카오 콘솔 도메인 3종 등록 가이드, `npx cap add android` + Manifest 권한 patch 가이드, 빌드 흐름, 트러블슈팅 6종, 환경별 차이 표.
@@ -146,18 +141,18 @@
 | 글로벌 컨텍스트 | `CLAUDE.md` |
 | 진행 일지 | `IMPLEMENTATION_LOG.md` (본 문서) |
 | 단계별 설계 문서 | `docs/STEP{1-7}_*.md` (7개) |
-| 시연 시나리오 | `README_TEST.md` (A~AA 27종) |
+| 테스트 시나리오 | `README_TEST.md` |
 | Android 빌드 가이드 | `README_CAPACITOR.md` |
 | 디자인 시안 참조 | `reference/claude_design/*.jsx` (7개) |
 | 코드 | `src/` (페이지 8 + 컴포넌트 30+ + lib 9 + hook 7 + store 4) |
 
-권장 다음 단계: `git init` → 첫 커밋 + 시연 직전 dry-run.
+권장 다음 단계: `git init` → 첫 커밋 + 배포 전 dry-run.
 
 ---
 
-## 보너스 — 카카오 실 데이터 통합 (시연일)
+## 보너스 — 카카오 실 데이터 통합
 
-- CLAUDE.md 시드 정책 완화: 시연 핵심 17곳은 그대로 유지, 카카오 Local API 를 보조로 사용.
+- 책방 데이터는 카카오 Local API 로 조회.
 - `src/types/kakao.d.ts` 에 `services.Places`, `LatLngBounds`, `event.addListener/removeListener` 타입 추가.
 - `src/lib/kakaoPlaces.ts`: 3개 패스(BK9 categorySearch + "도서관" / "북카페" keywordSearch) 병렬 + 페이지네이션 최대 2페이지 + `kakaoPlaceId` 기준 dedupe + `RemoteBookstore` 타입으로 normalize.
 - `src/stores/remoteBookstoresStore.ts`: id-keyed Map + 시드 좌표 80m 이내 dedupe (시드 우선) + list selector.
